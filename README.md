@@ -1,377 +1,372 @@
 
-
 # 🏛️ Blockchain-Based Cadastral System with GIS & Decentralized Storage
 
-> **A blockchain-integrated cadastral management system combining Ethereum, GIS mapping, and IPFS to create transparent, tamper-resistant, and verifiable land records.**
+> A blockchain-integrated land registry system combining Ethereum smart contracts, GIS mapping, and IPFS decentralized storage to create tamper-proof, transparent, and verifiable land ownership records.
 
-This project was motivated by the weaknesses of traditional land registration systems, including disputes, lack of transparency, data tampering, and inefficient record management.
-
-The core innovation of this system is the integration of:
-
-* **Blockchain (Ethereum)** for immutable ownership records
-* **GIS (Geographic Information Systems)** for storing real land parcel geometries
-* **IPFS (InterPlanetary File System)** for decentralized storage of land boundaries
-
-> ⚠️ **Note:** This is a Proof of Concept (PoC). The system demonstrates blockchain-based cadastral registration with decentralized storage. More advanced privacy mechanisms (such as Zero-Knowledge Proofs) are listed under *Future Advancements*.
-
----
-
-## 📋 Table of Contents
-
-* Overview
-* Key Features
-* System Architecture
-* Technology Stack
-* Prerequisites
-* Installation & Setup
-* Running the Application
-* API Documentation
-* Database Schema
-* Smart Contract
-* Security Features
-* Troubleshooting
-* Project Structure
-* Future Advancements
-* Contributing
-* License
+![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-blue)
+![Smart Contract](https://img.shields.io/badge/SmartContract-Solidity-orange)
+![Storage](https://img.shields.io/badge/Storage-IPFS-green)
+![Backend](https://img.shields.io/badge/Backend-Node.js-yellow)
+![Database](https://img.shields.io/badge/Database-PostgreSQL-blue)
+![GIS](https://img.shields.io/badge/GIS-Leaflet-red)
+![Architecture](https://img.shields.io/badge/Architecture-Decentralized-success)
+![Status](https://img.shields.io/badge/Status-Proof_of_Concept-success)
 
 ---
 
-## 🎯 Overview
+## 📖 Overview
 
-This system modernizes land registration by:
+This project implements a **blockchain-based cadastral (land registry) system** that securely manages land ownership records using decentralized technologies.
 
-* **Storing ownership commitments on blockchain** — immutable and publicly auditable
-* **Storing land boundaries on IPFS** — decentralized and tamper-resistant
-* **Using cryptographic commitments** — to prevent unauthorized modifications
-* **Providing a GIS-based map interface** — for intuitive parcel visualization
+It solves critical problems in traditional land registry systems:
 
-### Real-World Use Cases
+- Record tampering
+- Ownership disputes
+- Lack of transparency
+- Centralized database corruption risks
+- Inefficient verification processes
 
-1. **🏦 Bank Loan Applications** — Verify land ownership using blockchain records
-2. **🏘️ Property Sales** — Confirm seller ownership before purchase
-3. **📊 Government Tax Assessment** — Validate registered land parcels
-4. **⚖️ Legal Disputes** — Cryptographically verifiable ownership records
+The system integrates:
+
+- **Ethereum Blockchain** → Immutable ownership commitments
+- **IPFS** → Decentralized storage of land boundary GeoJSON
+- **GIS Mapping (Leaflet.js)** → Visual parcel management
+- **PostgreSQL** → Secure metadata and salt storage
+- **MetaMask** → Blockchain authentication
 
 ---
 
 ## ✨ Key Features
 
-### 🔐 Secure & Transparent Architecture
-
-* **Commitment-Based Registration**: Only cryptographic commitments stored on blockchain
-* **Tamper Resistance**: Blockchain prevents record alteration
-* **Auditability**: Every transaction is publicly logged
-
-### 🔗 Blockchain Integration
-
-* **Ethereum Smart Contracts**: Immutable land registry
-* **Event Logging**: Full audit trail of all parcel registrations
-* **Gas-Efficient Design**: Optimized Solidity contract
-
-### 📦 Decentralized Storage
-
-* **IPFS Integration**: Land boundary GeoJSON files stored off-chain
-* **Pinata Service**: Reliable IPFS pinning
-* **Encrypted Metadata**: Additional security layer for stored files
-
-### 🗺️ Interactive Map Interface
-
-* **Leaflet.js Maps**: Visualize land parcels
-* **GeoJSON Support**: Industry-standard spatial format
-* **Boundary Drawing**: Create parcels directly on map
+- Immutable land ownership records using Ethereum smart contracts
+- Decentralized storage of land boundaries using IPFS
+- Cryptographic commitment-based ownership verification
+- GIS-based interactive land parcel visualization
+- MetaMask blockchain authentication
+- Tamper-resistant and auditable system design
+- Full audit trail using blockchain events
+- Secure and verifiable ownership validation
 
 ---
 
 ## 🏗️ System Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Frontend (HTML/Vanilla JS)           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │   Login      │  │   Dashboard  │  │   Map View   │       │
-│  │   MetaMask   │  │   My Parcels │  │   GeoJSON    │       │
-│  └──────────────┘  └──────────────┘  └──────────────┘       │
-└────────────────────────┬────────────────────────────────────┘
-                         │ HTTPS / REST API
-┌────────────────────────▼────────────────────────────────────┐
-│                    Backend (Node.js + Express)              │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │     Auth     │  │  Parcel      │  │    IPFS      │       │
-│  │   JWT/Web3   │  │  Registry    │  │   Pinata     │       │
-│  └──────────────┘  └──────────────┘  └──────────────┘       │
-└────────┬──────────────────┬─────────────────┬───────────────┘
-         │                  │                 │
-         ▼                  ▼                 ▼
-┌────────────────┐  ┌──────────────┐  ┌──────────────┐
-│   PostgreSQL   │  │   Ethereum   │  │     IPFS     │
-│   (Records)    │  │  (Ganache)   │  │  (Pinata)    │
-└────────────────┘  └──────────────┘  └──────────────┘
-```
+```mermaid
+flowchart LR
 
-### Data Flow
+    User[User / Land Owner]
 
-#### **1. Parcel Registration**
+    Frontend[Frontend Application<br>HTML, JS, Leaflet GIS]
+
+    Backend[Backend Service<br>Node.js + Express API]
+
+    Blockchain[(Ethereum Blockchain<br>Smart Contract)]
+
+    IPFS[(IPFS Storage<br>GeoJSON Boundary Files)]
+
+    Database[(PostgreSQL<br>Salt, CID, Metadata)]
+
+    MetaMask[MetaMask Wallet]
+
+    User --> Frontend
+
+    Frontend --> MetaMask
+
+    MetaMask --> Blockchain
+
+    Frontend --> Backend
+
+    Backend --> IPFS
+
+    IPFS --> Backend
+
+    Backend --> Database
+
+    Backend --> Blockchain
+
+    Blockchain --> Backend
+
+    Backend --> Frontend
+````
+
+---
+
+## ⚙️ Architecture Explanation
+
+### Frontend Layer (GIS Interface)
+
+Provides:
+
+* Interactive map visualization
+* Parcel boundary drawing
+* Ownership dashboard
+* Blockchain wallet connection
+
+Technologies:
+
+* HTML, CSS, JavaScript
+* Leaflet.js GIS library
+* ethers.js
+
+---
+
+### Authentication Layer (MetaMask)
+
+Handles:
+
+* User identity verification
+* Blockchain wallet authentication
+* Transaction signing
+
+Ensures:
+
+* Secure ownership verification
+* Decentralized identity
+
+---
+
+### Backend Layer (Node.js + Express)
+
+Responsibilities:
+
+* API management
+* IPFS file upload and retrieval
+* Commitment generation
+* Database management
+* Smart contract interaction
+
+Acts as:
+
+* Middleware between frontend and blockchain/IPFS
+
+---
+
+### Blockchain Layer (Ethereum Smart Contract)
+
+Stores:
+
+* Ownership commitments
+* Parcel registration records
+* Immutable ownership proof
+
+Provides:
+
+* Tamper resistance
+* Transparency
+* Auditability
+
+Smart contract:
 
 ```
-User → Upload GeoJSON → IPFS (get CID)
-→ Generate Commitment = hash(owner + parcelId + salt)
-→ Store Commitment on Blockchain
-→ Store Salt + CID in Database
-```
-
-#### **2. Ownership Verification**
-
-```
-User → Query blockchain for commitment
-→ Match with database record
-→ Ownership Verified
+CommitmentLandRegistry.sol
 ```
 
 ---
 
-## 🛠️ Technology Stack
+### Decentralized Storage Layer (IPFS)
 
-### Frontend
+Stores:
 
-* **HTML5/CSS3/JavaScript**
-* **Leaflet.js** — Interactive maps
-* **Leaflet.draw** — Map drawing tools
-* **ethers.js** — Ethereum interaction
-* **MetaMask** — Wallet integration
+* GeoJSON land boundary files
 
-### Backend
+Provides:
 
-* **Node.js v18+**
-* **Express.js**
-* **ethers.js v6**
-* **PostgreSQL**
-* **JWT Authentication**
-* **Axios**
+* Decentralized storage
+* Tamper resistance
+* Permanent data availability
 
-### Blockchain
+Uses:
 
-* **Solidity ^0.8.0**
-* **Truffle Suite**
-* **Ganache (Local Blockchain)**
-* **OpenZeppelin Libraries**
-
-### Storage
-
-* **IPFS**
-* **Pinata**
-
-### Cryptography
-
-* **Keccak256 Hashing**
-* **ECDSA Signatures**
-* **Commitment Schemes**
+* Pinata IPFS pinning service
 
 ---
 
-## 📦 Prerequisites
+### Database Layer (PostgreSQL)
 
-| Software   | Version |
-| ---------- | ------- |
-| Node.js    | v18+    |
-| PostgreSQL | v14+    |
-| Ganache    | v7+     |
-| Truffle    | v5+     |
-| MetaMask   | Latest  |
+Stores:
 
----
+* Parcel metadata
+* IPFS CID references
+* Salt values for commitment verification
+* User data
 
-## 🚀 Installation & Setup
+Ensures:
 
-*(Kept same as your original — unchanged for brevity)*
+* Efficient data retrieval
+* Secure metadata management
 
 ---
 
-## 🎮 Running the Application
+## 🔄 Parcel Registration Flow
+
+```mermaid
+flowchart LR
+
+    User --> Upload[Upload GeoJSON]
+
+    Upload --> IPFS[Store GeoJSON in IPFS]
+
+    IPFS --> CID[Get CID]
+
+    CID --> Commitment[Generate Cryptographic Commitment]
+
+    Commitment --> Blockchain[Store Commitment on Blockchain]
+
+    Blockchain --> Database[Store CID and Salt]
+
+    Database --> User
+```
+
+---
+
+## 🔍 Ownership Verification Flow
+
+```mermaid
+flowchart LR
+
+    User --> Request[Request Ownership Verification]
+
+    Request --> Blockchain
+
+    Blockchain --> Commitment
+
+    Commitment --> Database
+
+    Database --> Match[Verify Commitment Match]
+
+    Match --> Result[Ownership Verified]
+```
+
+---
+
+## 🔐 Cryptographic Security Model
+
+Commitment formula:
+
+```
+commitment = keccak256(owner_address + parcel_id + salt)
+```
+
+Ensures:
+
+* Ownership privacy
+* Tamper resistance
+* Verifiable integrity
+
+Uses:
+
+* Keccak256 hashing
+* Ethereum cryptographic security
+
+---
+
+## 🧱 Tech Stack
+
+| Layer          | Technology            |
+| -------------- | --------------------- |
+| Frontend       | HTML, CSS, JavaScript |
+| GIS            | Leaflet.js            |
+| Backend        | Node.js, Express      |
+| Blockchain     | Ethereum              |
+| Smart Contract | Solidity              |
+| Wallet         | MetaMask              |
+| Storage        | IPFS                  |
+| Database       | PostgreSQL            |
+| Blockchain Dev | Truffle, Ganache      |
+| Crypto         | Keccak256, ECDSA      |
+
+
+
+---
+
+## 🚀 Installation and Setup
+
+### Prerequisites
+
+* Node.js v18+
+* PostgreSQL
+* Ganache
+* Truffle
+* MetaMask
+
+---
+
+### Start Blockchain (Ganache)
+
+```bash
+ganache
+```
+
+---
+
+### Deploy Smart Contract
+
+```bash
+cd blockchain
+truffle migrate
+```
+
+---
 
 ### Start Backend
 
 ```bash
 cd backend
+npm install
 npm start
 ```
+
+---
 
 ### Start Frontend
 
 ```bash
 cd frontend
-live-server --port=3000
-```
-
-Open:
-
-```
-http://localhost:3000
+live-server
 ```
 
 ---
 
-## 📡 API Documentation
+## 🔐 Security Features
 
-### Authentication
-
-#### `POST /api/auth/challenge`
-
-#### `POST /api/auth/login`
-
-### Parcel Management
-
-#### `GET /api/my-parcels`
-
-#### `POST /api/parcels/register` (Authority only)
+* Immutable blockchain storage
+* Cryptographic ownership commitments
+* Tamper-resistant decentralized storage
+* Secure MetaMask authentication
+* SQL injection prevention
+* Input validation
 
 ---
 
-## 🗄️ Database Schema
+## 🌍 Real-World Applications
 
-### Tables
-
-* **users**
-* **user_secrets**
-* **transfer_requests**
-* **proof_verifications** (renamed to `verification_audit` in practice)
-
----
-
-## 📜 Smart Contract — CommitmentLandRegistry.sol
-
-*(Your contract stays the same — still valid without ZKP.)*
+* Government land registry systems
+* Property ownership verification
+* Banking loan collateral verification
+* Legal land dispute resolution
+* Real estate ownership validation
 
 ---
 
-## 🔒 Security Features
+## 🔮 Future Enhancements
 
-### Authentication & Authorization
-
-* JWT-based authentication
-
-### Rate Limiting
-
-* API request throttling
-
-### Input Validation
-
-* Ethereum address validation
-* GeoJSON validation
-
-### SQL Injection Prevention
-
-* Parameterized queries
-
-### Blockchain Security
-
-* Commitment uniqueness
-* Authority-only registration
-* Event-based audit logs
+* Zero-Knowledge Proof ownership verification
+* Ethereum mainnet deployment
+* Multi-region IPFS redundancy
+* Role-based authority access
+* Full decentralization of backend
 
 ---
 
-## 🐛 Troubleshooting
+## 👨‍💻 Author
 
-*(Kept same as your original — still relevant.)*
+Vasan S P
 
----
-
-## 📁 Project Structure
-
-```
-blockchain-based-cadastral-system-main/
-│
-├── frontend/
-│   ├── index.html
-│   ├── dashboard.html
-│   ├── register.html
-│   ├── verify.html
-│
-├── backend/
-│   ├── server.js
-│   ├── schema.sql
-│   ├── package.json
-│   ├── .env
-│
-├── blockchain/
-│   ├── contracts/
-│   │   └── CommitmentLandRegistry.sol
-│   ├── migrations/
-│   ├── truffle-config.js
-│
-└── README.md
-```
+GitHub: [https://github.com/vasan12sp](https://github.com/vasan12sp)
 
 ---
 
-## 🚀 **Future Advancements (Planned Upgrades)**
+## 📄 License
 
-### 🔐 Integration of Zero-Knowledge Proofs (ZKP)
+MIT License
 
-A future version of this system aims to incorporate **true Zero-Knowledge Proofs (zk-SNARKs/zk-STARKs)** to enhance privacy while maintaining verifiability.
-
-Planned improvements include:
-
-1. **Real ZK Circuit Implementation**
-
-   * Use Circom or Noir to create a formal ZK circuit proving:
-
-     ```
-     hash(owner + parcelId + salt) == stored commitment
-     ```
-   * Generate proofs using `snarkjs` or a similar prover.
-
-2. **Client-Side Proof Generation**
-
-   * Users generate proofs locally, reducing trust in the backend.
-
-3. **On-Chain or Off-Chain ZK Verification**
-
-   * Deploy a Solidity verifier contract, or
-   * Use a trusted backend verifier with public verification keys.
-
-4. **Privacy-Preserving Ownership Verification**
-
-   * Allow users to prove ownership **without revealing identity or salt**.
-
-5. **Verifier-Bound Proofs**
-
-   * Enable proofs that can only be verified by a specific party (e.g., a bank).
-
-This upgrade would transition the system from:
-
-> “Commitment-based blockchain cadastral system”
-> to
-> “Fully privacy-preserving ZK-enabled blockchain cadastral system.”
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit changes
-4. Open a Pull Request
-
----
-
-## 📝 License
-
-MIT License — see LICENSE file.
-
----
-
-## 🙏 Acknowledgments
-
-* OpenZeppelin
-* Truffle Suite
-* Pinata
-* Leaflet
-* PostgreSQL
-
----
-
-**Made with ❤️ for transparent and tamper-proof land records**
-
----
